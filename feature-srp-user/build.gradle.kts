@@ -31,4 +31,19 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp("com.google.dagger:hilt-compiler:${libs.versions.hilt.get()}")
+
+    // Retrofit + Moshi
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+
+    // OkHttp (Core + Logging)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // Moshi core
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    ksp(libs.moshi.kotlin.codegen)
+
 }
