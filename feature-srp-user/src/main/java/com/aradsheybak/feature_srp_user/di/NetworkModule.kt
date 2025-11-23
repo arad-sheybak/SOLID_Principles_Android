@@ -2,37 +2,35 @@ package com.aradsheybak.feature_srp_user.di
 
 import com.aradsheybak.feature_srp_user.data.remote.api.UserApiService
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://example.com/api/"
 
-    private fun provideMoshi(): Moshi =
-        Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi = MoshiProvider().createMoshi()
 
-    private fun provideOkHttp(): OkHttpClient =
-        OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient = OkHttpProvider().createOkHttpClient()
 
-    fun provideRetrofit(): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(provideOkHttp())
-            .addConverterFactory(MoshiConverterFactory.create(provideMoshi()))
-            .build()
+    @Provides
+    @Singleton
+    fun provideRetrofit(
+        moshi: Moshi,
+        okHttpClient: OkHttpClient
+    ): Retrofit = RetrofitProvider().createRetrofit(moshi, okHttpClient)
 
-    fun provideUserApiService(): UserApiService =
-        provideRetrofit().create(UserApiService::class.java)
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApiService =
+        ApiServiceProvider().createUserApiService(retrofit)
 }

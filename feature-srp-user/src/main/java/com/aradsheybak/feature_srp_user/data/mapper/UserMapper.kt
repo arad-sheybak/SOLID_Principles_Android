@@ -6,9 +6,9 @@ import com.aradsheybak.feature_srp_user.data.remote.dto.UserDto
 fun UserDto.toDomain(): User {
     return User(
         id = id,
-        name = fullName,
+        name = name,
         email = email,
-        profileImageUrl = profile,
-        isActive = isActive
+        profileImageUrl = "https://i.pravatar.cc/150?u=$email",
+        isActive = true
     )
 }

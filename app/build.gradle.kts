@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
-
 android {
     namespace = "com.aradsheybak.android_solid_principles"
     compileSdk = 36
@@ -30,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         compose = true
@@ -42,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature-srp-user"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -68,7 +68,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
-    ksp("com.google.dagger:hilt-compiler:${libs.versions.hilt.get()}")
+    ksp(libs.hilt.android.compiler)
 
     //compose navigation
     implementation(libs.androidx.navigation.compose)

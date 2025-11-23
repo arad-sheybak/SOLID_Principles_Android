@@ -17,33 +17,53 @@ android {
     buildFeatures {
         compose = true
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
+
+    // Compose
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.compose.ui:ui:${libs.versions.compose.get()}")
-    implementation("androidx.compose.material:material:${libs.versions.compose.get()}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${libs.versions.compose.get()}")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${libs.versions.lifecycle.get()}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${libs.versions.lifecycle.get()}")
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    // Hilt
     implementation(libs.hilt.android)
-    ksp("com.google.dagger:hilt-compiler:${libs.versions.hilt.get()}")
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
-    // Retrofit + Moshi
+    // Network
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi.converter)
-
-    // OkHttp (Core + Logging)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
 
-    // Moshi core
+    // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
     ksp(libs.moshi.kotlin.codegen)
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Image Loading
+    implementation(libs.coil.compose)
 }
